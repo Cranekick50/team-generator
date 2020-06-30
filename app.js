@@ -59,8 +59,29 @@ let questions = [
 inquirer.prompt(questions).then((answers) => {
     let employee = new Employee (answers.name, answers.id, answers.email, answers.role)
     team.push(employee)
+    extraQuestion(employee)
     console.log(team)
+
 });
+
+function extraQuestion() {
+    switch (answers.role) {
+        case "Engineer":
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "github", 
+                    message: "What is your GitHub user ID?",
+
+                },
+                nextEmployee()
+            ]
+            )
+    }
+}
+
+function nextEmployee()
+
 
 
 
