@@ -23,11 +23,6 @@ function Employee (name, id, email, role) {
         this.role = role;
     }
 
-let teamMember;
-function employeeDetails(answers){
-    teamMember = new Employee
-}
-
 let questions = [
     {
         type: "input",
@@ -56,11 +51,99 @@ let questions = [
     },
 ];
 
-inquirer.prompt(questions).then((answers) => {
-    let employee = new Employee (answers.name, answers.id, answers.email, answers.role)
-    team.push(employee)
-    console.log(team)
-});
+employeeQuestions()
+
+function employeeQuestions() {
+    inquirer.prompt(questions).then ((answers) => {
+        let employee = new Employee (answers.name, answers.id, answers.email, answers.role)
+        role = answers.role[0];
+        team.push(employee);
+        console.log(team);
+        extraQuestion();
+    });
+}
+
+
+
+var role
+
+const extraQuestion = () => {
+    console.log(role)
+    switch (role) {
+        case "Engineer":
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "github", 
+                    message: "What is your GitHub user ID?",
+
+                },
+                
+            ])
+            .then((answers) => {
+                nextEmployee()
+                console.log(answers)
+            })
+        break;
+
+        case "Intern":
+            
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "school", 
+                    message: "What school do you go to?",
+
+                },
+            ])
+            .then((answers) => {
+                nextEmployee()
+                console.log(answers)
+            })
+        break;
+
+        case "Manager":
+            
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "office", 
+                    message: "What is your office number?",
+
+                },
+            ])
+            .then((answers) => {
+                nextEmployee()
+                console.log(answers)
+            })
+        break;
+
+        default:
+            console.log("no role selected.")
+    }
+}
+
+
+function nextEmployee() {
+    inquirer.prompt([
+        {
+            type: "checkbox",
+            name: "addEmployee",
+            message: "Do you have another employee?",
+            choices: [
+                "yes",
+                "no",
+            ]
+        }
+    ])
+    .then((answers) => {
+        console.log(answers.addEmployee[0])
+        if (answers.addEmployee[0]==="yes") {
+            employeeQuestions()
+        }
+    })
+}
+
 
 
 
