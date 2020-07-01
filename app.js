@@ -14,13 +14,16 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-let team = []
+let team = [];
 
 function Employee (name, id, email, role) {
         this.name = name;
         this.id = id;
         this.email = email;
         this.role = role;
+        this.github = github;
+        this.school = school;
+        this.office = office;
     }
 
 let questions = [
@@ -40,94 +43,70 @@ let questions = [
         message: "What is the employee's email?",
     },
     {
-        type: "checkbox",
+        type: "list",
         name: "role",
         message: "What is the employee's role?",
         choices: [
-            "Engineer",
-            "Intern",
-            "Manager",
+            'Engineer',
+            'Intern',
+            'Manager',
         ]
+    },
+    {
+        type: "input",
+        name: "github", 
+        message: "What is your GitHub user ID?",
+        when: (answer) => answer.role === 'Engineer'
+    },
+    {
+        type: "input",
+        name: "school", 
+        message: "What is your school?",
+        when: (answer) => answer.role === 'Intern'
+    },
+    {
+        type: "number",
+        name: "office", 
+        message: "What is your office number?",
+        when: (answer) => answer.role === 'Manager'
     },
 ];
 
 employeeQuestions()
 
 function employeeQuestions() {
-    inquirer.prompt(questions).then ((answers) => {
-        let employee = new Employee (answers.name, answers.id, answers.email, answers.role)
-        role = answers.role[0];
-        team.push(employee);
-        console.log(team);
-        extraQuestion();
+    inquirer.prompt(questions).then((answers) => {
+        let role = answers.role
+        switch (role) {
+            case 'Engineer':
+            employee = new Engineer (answers.name, answers.id, answers.email, answers.role, answers.github)
+            team.push(employee);
+            console.log(team);
+            nextEmployee();
+        break;
+
+        case 'Intern':
+            employee = new Intern (answers.name, answers.id, answers.email, answers.role, answers.school)
+            team.push(employee);
+            console.log(team);
+            nextEmployee();
+        break;
+        
+        case 'Manager':
+            employee = new Manager (answers.name, answers.id, answers.email, answers.role, answers.office)
+            team.push(employee);
+            console.log(team);
+            nextEmployee();
+        break;
+        }
     });
-}
-
-
-
-var role
-
-const extraQuestion = () => {
-    console.log(role)
-    switch (role) {
-        case "Engineer":
-            inquirer.prompt([
-                {
-                    type: "input",
-                    name: "github", 
-                    message: "What is your GitHub user ID?",
-
-                },
-                
-            ])
-            .then((answers) => {
-                nextEmployee()
-                console.log(answers)
-            })
-        break;
-
-        case "Intern":
-            
-            inquirer.prompt([
-                {
-                    type: "input",
-                    name: "school", 
-                    message: "What school do you go to?",
-
-                },
-            ])
-            .then((answers) => {
-                nextEmployee()
-                console.log(answers)
-            })
-        break;
-
-        case "Manager":
-            
-            inquirer.prompt([
-                {
-                    type: "input",
-                    name: "office", 
-                    message: "What is your office number?",
-
-                },
-            ])
-            .then((answers) => {
-                nextEmployee()
-                console.log(answers)
-            })
-        break;
-
-        default:
-            console.log("no role selected.")
-    }
 }
 
 
 function nextEmployee() {
     inquirer.prompt([
         {
-            type: "checkbox",
+            type: "list",
             name: "addEmployee",
             message: "Do you have another employee?",
             choices: [
@@ -137,13 +116,18 @@ function nextEmployee() {
         }
     ])
     .then((answers) => {
-        console.log(answers.addEmployee[0])
-        if (answers.addEmployee[0]==="yes") {
+        if (answers.addEmployee==="yes") {
             employeeQuestions()
+        } else {
+        renderHtml()
         }
     })
 }
 
+function renderHtml() {
+    console.log("it printed")
+
+}
 
 
 
