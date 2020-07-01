@@ -124,7 +124,7 @@ function nextEmployee() {
 }
 
 function renderHtml() {
-    //need to print
+    fs.writeFileSync(outputPath, render(team), "UTF-8")
 };
 
 
