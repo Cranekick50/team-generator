@@ -16,11 +16,10 @@ const render = require("./lib/htmlRenderer");
 
 let team = [];
 
-function Employee (name, id, email, role) {
+function Employee (name, id, email) {
         this.name = name;
         this.id = id;
         this.email = email;
-        this.role = role;
     }
 
 let questions = [
@@ -76,27 +75,30 @@ function employeeQuestions() {
         let role = answers.role
         switch (role) {
             case 'Engineer':
-            employee = new Engineer (answers.name, answers.id, answers.email, answers.role, answers.github)
+            employee = new Engineer (answers.name, answers.id, answers.email, answers.github)
             team.push(employee);
             console.log(team);
             nextEmployee();
         break;
 
         case 'Intern':
-            employee = new Intern (answers.name, answers.id, answers.email, answers.role, answers.school)
+            employee = new Intern (answers.name, answers.id, answers.email, answers.school)
             team.push(employee);
             console.log(team);
             nextEmployee();
         break;
         
         case 'Manager':
-            employee = new Manager (answers.name, answers.id, answers.email, answers.role, answers.office)
+            employee = new Manager (answers.name, answers.id, answers.email, answers.office)
             team.push(employee);
             console.log(team);
             nextEmployee();
         break;
+        
+        default:
+            employee = new Employee (answers.name, answers.id, answers.email);
         }
-    });
+        });
 }
 
 
@@ -122,9 +124,8 @@ function nextEmployee() {
 }
 
 function renderHtml() {
-    console.log("it printed")
-
-}
+    //need to print
+};
 
 
 
